@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paribeir <paribeir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paribeir <paribeir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 16:46:49 by paribeir          #+#    #+#             */
-/*   Updated: 2024/01/29 16:24:10 by paribeir         ###   ########.fr       */
+/*   Updated: 2024/03/03 16:47:56 by paribeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //client is the speaker
 
 #include "minitalk.h"
-int client(int pid, char *message);
 
 int main(int argc, char *argv[]) 
 {
 
+	if (argc != 3)
+		return (ft_printf("Error\n--> The client needs two parameters.\n"));
 	client(argc, argv[1]);
 	//create stop condition.
 
@@ -39,6 +40,6 @@ int	char_to_bit(char c) //or maybe call it "encrypt"
 {
 	int	bit;
 
-	bit = /*turn it into string of bits.
+	bit = 1;/*turn it into string of bits.
 	We want to have a sequence of 8-bit strings*/
 }

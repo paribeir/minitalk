@@ -3,28 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paribeir <paribeir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paribeir <paribeir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/27 16:46:53 by paribeir          #+#    #+#             */
-/*   Updated: 2024/01/29 16:24:08 by paribeir         ###   ########.fr       */
+/*   Created: 2024/03/03 14:38:59 by paribeir          #+#    #+#             */
+/*   Updated: 2024/03/03 20:38:17 by paribeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
-#include <stdio.h>
-//server is the listener
+#include "./minitalk.h"
 
-//make a "bit to char" bzw "decrypt" function.
+/*Function that will handle the signal.*/
 
-void	server(int client_pid, int client_message)
+void handler (int signal_nbr, siginfo_t *info, void *ucontent)
 {
-	int	server_pid;
 
-	server_pid = getpid();
-	printf("Server's PID: %d", server_pid);
-	while(1)
-	{
-		sleep(1);
-	}
 }
 
+int main(void)
+{
+    struct sigaction	s_action;
+
+    s_action.sa_sigaction = handler;
+    sigemptyset(&s_action.sa_mask);
+    s_action.sa_flags = SA_SIGINFO;
+    if (sigaction(SIGUSR1, &s_action, NULL) == -1 || sigaction(SIGUSR2, &s_action, NULL) == -1)
+        return(ft_printf("sigaction error\n"));
+    ft_printf("Servus at your service.\n The process ID is %d\n", getpid());
+    return (0);
+}
