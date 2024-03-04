@@ -3,31 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paribeir <paribeir@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: paribeir <paribeir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 14:38:59 by paribeir          #+#    #+#             */
-/*   Updated: 2024/03/03 20:38:17 by paribeir         ###   ########.fr       */
+/*   Created: 2024/01/27 16:46:53 by paribeir          #+#    #+#             */
+/*   Updated: 2024/03/04 17:00:10 by paribeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minitalk.h"
-
+//server is the listener
+#include "minitalk.h"
 /*Function that will handle the signal.*/
-
-void handler (int signal_nbr, siginfo_t *info, void *ucontent)
+void	server_handler(int signum, siginfo_t *info, void *content)
 {
-
+	ft_printf("Received signal %d from process %d.\n", signum, info->si_pid);
+	if (signum == SIGUSR1)
+		ft_printf("0\n");
+	else if (signum == SIGUSR2)
+		ft_printf("1\n");
 }
 
-int main(void)
+int	main(void)
 {
-    struct sigaction	s_action;
+	struct sigaction	s_action;
 
-    s_action.sa_sigaction = handler;
-    sigemptyset(&s_action.sa_mask);
-    s_action.sa_flags = SA_SIGINFO;
-    if (sigaction(SIGUSR1, &s_action, NULL) == -1 || sigaction(SIGUSR2, &s_action, NULL) == -1)
-        return(ft_printf("sigaction error\n"));
-    ft_printf("Servus at your service.\n The process ID is %d\n", getpid());
-    return (0);
+	sigemptyset(&s_action.sa_mask);
+	s_action.sa_flags = SA_SIGINFO;
+	s_action.sa_sigaction = server_handler;
+	if (sigaction(SIGUSR1, &s_action, NULL) == -1 || 
+		sigaction(SIGUSR2, &s_action, NULL) == -1)
+		return (ft_printf("sigaction error\n"));
+	ft_printf("Servus at your service.\n The process ID is %d\n", getpid());
+	while (1)
+		pause();
+	return (0);
 }
