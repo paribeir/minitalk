@@ -6,51 +6,39 @@
 #    By: paribeir <paribeir@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 14:52:47 by paribeir          #+#    #+#              #
-#    Updated: 2024/03/03 20:35:47 by paribeir         ###   ########.fr        #
+#    Updated: 2024/03/06 15:27:47 by paribeir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minitalk
+SOURCES = server.c client.c
+OBJECTS = $(SOURCES:.c=.o)
 
-SERVER = server
-CLIENT = client
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
 
-SERVER_SRC = server.c
-CLIENT_SRC = client.c
+all: server client
 
-SERVER_OBJ = $(SERVER_SRC:.c=.o)
-CLIENT_OBJ = $(CLIENT_SRC:.c=.o)
+bonus: server client
 
-LIBFT = ../libft/libft.a
-CC = cc
-FLAGS = -Wall -Werror -Wextra
-OPTIONS = -c -g
-RM = rm -f
+server: server.o libft
+	$(CC) -o $@ $< -Llibft -lft
 
-all: $(NAME)
+client: client.o libft
+	$(CC) -o $@ $< -Llibft -lft
 
-$(NAME): server client
-
-server: $(SERVER_OBJ)
-	$(CC) $(FLAGS) $(OPTIONS) $(SERVER_OBJ) -o $(SERVER) -Llibft -lft
-
-client: $(CLIENT_OBJ)
-	$(CC) $(FLAGS) $(OPTIONS) $(CLIENT_OBJ) -o $(CLIENT) -Llibft -lft
-
-%.o : %.c
-	$(CC) $(FLAGS) $(OPTIONS) $< -o $@
+%.o: %.c
+	$(CC) -c $(CFLAGS) $?
 
 libft:
-	@make -C ./libft
+	make -C libft
 
 clean:
-	$(RM) $(SERVER_OBJ) $(CLIENT_OBJ)
-	@make clean -C ./libft
-
+	rm -f $(OBJECTS)
+	make -C libft clean
+	
 fclean: clean
-	@make fclean -C ./libft
-	$(RM) $(SERVER) $(CLIENT)
+	rm -f server client libft/libft.a
 
 re: fclean all
 
-.PHONY: all clean fclean re server client
+.PHONY: all bonus libft clean fclean re

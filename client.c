@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paribeir <paribeir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paribeir <paribeir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 16:46:49 by paribeir          #+#    #+#             */
-/*   Updated: 2024/03/04 17:15:17 by paribeir         ###   ########.fr       */
+/*   Updated: 2024/03/07 20:08:59 by paribeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,44 +25,79 @@ int	main(int argc, char *argv[])
 		return (ft_printf("Error\n--> Empty message\n"));
 	while (argv[1][i])
 	{
-		if (ft_isdigit(argv[1][i++]))
+		if (!(ft_isdigit(argv[1][i++])))
 			return (ft_printf("Error\n--> PID must only contain digits\n"));
 	}
 	if (ft_atoi(argv[1]) < 1)
 		return (ft_printf("Error\n--> PID must be an unsigned int\n"));
-	ft_printf("Client's PID: %d\n", getpid());
-	ft_changesignals();
-	while (argv[2][i])
-		ft_encode(ft_atoi(argv[1]), argv[2][i++]);
-	return (0);
+	ft_printf("Client's process ID: %d\n", getpid());
+	ft_client_signals();
+	ft_dtob(ft_atoi(argv[1]), argv[2]);
+	ft_dtob(ft_atoi(argv[1]), "\n");
+	exit (EXIT_SUCCESS);
 }
 
-/*convert char into byte with bitwise operationssss*/
-void	ft_encode(int server_id, char c)
+/*convert char into binary with bitwise operationssss*/
+void	ft_dtob(int server_id, char *c)
 {
-	int	byte;
+	int	i;
+	int	k;
 
-	byte = 8;
-	while (byte-- > 0)
+	while(*c)
 	{
-		
+		i = 8;
+		while (i-- > 0)
+		{
+			k = *c >> i;
+			if (k & 1)
+				kill((pid_t)server_id, SIGUSR1);
+			else
+				kill((pid_t)server_id, SIGUSR2);
+			usleep(100);
+		}
+		c++;
 	}
 }
+/*void	ft_dtob(int server_id, char c)
+{
+	int	i;
+	int	bitmask;
+	int	k;
 
-void	ft_changesignals(void)
+	i = 8;
+	bitmask = 0b10000000;
+	while (i-- > 0)
+	{
+		k = (int)c & bitmask;
+		if (k & 1)
+			kill(server_id, SIGUSR1);
+		else
+			kill(server_id, SIGUSR2);
+		bitmask = bitmask >> 1;
+	}
+}*/
+
+void	ft_client_signals(void)
 {
 	struct sigaction	sa_action;
 
 	sigemptyset(&sa_action.sa_mask);
-	sa_action.sa_handler = client_handler;
+	sa_action.sa_handler = &ft_client_handler;
 	sa_action.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &sa_action, NULL) == -1 || 
 		sigaction(SIGUSR2, &sa_action, NULL) == -1)
-		return (ft_printf("sigaction error\n"));
+	{
+		ft_printf("sigaction error\n");
+		exit(EXIT_FAILURE);
+	}
 }
 
-void	client_handler(int signum)
+void	ft_client_handler(int signum)
 {
+	static int chars;
+
 	if (signum == SIGUSR2)
-		ft_printf("character received\n");
+		ft_printf("%d characters received\n", ++chars);
+	else
+		return ;
 }
