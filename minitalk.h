@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minitalk.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paribeir <paribeir@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: paribeir <paribeir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/25 17:08:43 by paribeir          #+#    #+#             */
-/*   Updated: 2024/03/07 17:56:30 by paribeir         ###   ########.fr       */
+/*   Created: 2024/01/27 16:53:36 by paribeir          #+#    #+#             */
+/*   Updated: 2024/04/26 19:15:00 by paribeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /*** macros ***/
 # define _GNU_SOURCE
-# define WAIT 100
+# define WAIT 300
 
 /*** libraries ***/
 # include "./libft/libft.h"

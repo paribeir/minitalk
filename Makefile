@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: paribeir <paribeir@student.42berlin.de>    +#+  +:+       +#+         #
+#    By: paribeir <paribeir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/03/03 14:52:47 by paribeir          #+#    #+#              #
-#    Updated: 2024/03/06 15:27:47 by paribeir         ###   ########.fr        #
+#    Created: 2024/03/11 14:34:40 by paribeir          #+#    #+#              #
+#    Updated: 2024/04/26 15:05:05 by paribeir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
