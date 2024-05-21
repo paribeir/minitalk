@@ -282,11 +282,11 @@ SIGUSR1 and SIGUSR2 are custom signals that can be defined by the user. We use s
     
     ___________
     
-    **❗Issue**: struct sigaction not recognized by vs code
+**❗Issue**: struct sigaction not recognized by vs code
     
-    Despite including <signal.h> in my header, struct sigaction and SA_SIGINFO were not being recognized by vs code. I got the error message “*incomplete type is not allowed*”. 
+Despite including <signal.h> in my header, struct sigaction and SA_SIGINFO were not being recognized by vs code. I got the error message “*incomplete type is not allowed*”. 
     
-    To solve this, I added the test macro [_GNU_SOURCE](https://man7.org/linux/man-pages/man7/feature_test_macros.7.html) to my header file above my libraries. This instructs the compiler to include additional features and definitions provided by the GNU C Library. Without it, the compiler was using a strict interpretation of the C standard, which did not include the struct sigaction that I needed.
+To solve this, I added the test macro [_GNU_SOURCE](https://man7.org/linux/man-pages/man7/feature_test_macros.7.html) to my header file above my libraries. This instructs the compiler to include additional features and definitions provided by the GNU C Library. Without it, the compiler was using a strict interpretation of the C standard, which did not include the struct sigaction that I needed.
     
 ## Step 6: Decode string: from signal to char
     
