@@ -3,7 +3,7 @@
 ## Step 1: get PID
  > “The server must be started first. After its launch, it has to print its PID.”
     
-PID is the *process ID* of the current process, a unique decimal number that can be used, for example, to specify the process when attaching a debugger to it. You might have seen this number before when you, for example, accessed the system manager (Unix) or task manager (Windows), the PID of a process is under the Details/ID tab.
+PID is the *process ID* of the current process, a unique decimal number that can be used, for example, to specify the process when attaching a debugger to it. You might have seen this number before when you, for example, accessed the system manager (Unix) or task manager (Windows). The PID of a certain process can be found under the Details/ID tab.
     
     #include **<unistd.h>**
     /*The getpid function returns the process ID of the current process.*/
