@@ -43,7 +43,7 @@ If the input passes all error checks, we can start encoding our message.
     
  We are going to send our message to the sever by sending zeros and ones.
     
-To do this, we are going to loop thourgh the string and encode each character into its binary form.
+To do this, we are going to loop through the string and encode each character into its binary form.
     
 Since I already knew the “bruteforce” way of using successive division to convert bases (C Piscine C 04 - ft_putnbr_base), I decided to learn how to convert integers from decimal into binary using bitwise operations. Turns out, it’s much faster than the bruteforce method (time complexity: O(1) vs O(logn)).
     
