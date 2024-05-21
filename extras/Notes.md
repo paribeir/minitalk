@@ -9,7 +9,6 @@
     
 PID is the *process ID* of the current process, a unique decimal number that can be used, for example, to specify the process when attaching a debugger to it. You might have seen this number before. for example, when you access the system manager (Unix) or task manager (Windows), the PID of a process is under the Details/ID tab.
     
-    ```c
     #include **<unistd.h>**
     /*The getpid function returns the process ID of the current process.*/
     pid_t getpid (void);
@@ -137,7 +136,7 @@ If still unclear, review bitwise operations (down).
         
         k & (-k)   
     
-    ```c
+    ```
     void	ft_dtob(int server_id, char c)
     {
     	int	bits;
@@ -161,7 +160,7 @@ If still unclear, review bitwise operations (down).
     
     Instead of bitshifting each bite from c to place it in the LSB position, we can use a bitmask. A mask defines which bits you want to keep, and which bits you want to clear. We compare the values of the bitmask with our char and assign it to k. We do the same “if else” statements as above. We continue looping, changing the position of the number “1” (bitshift) in the bitmask once to the right on each iteration.
     
-    ```c
+    ```
     void	ft_dtob(int server_id, char c)
     {
     	int	bits;
@@ -198,7 +197,7 @@ SIGUSR1 and SIGUSR2 are custom signals that can be defined by the user (more to 
 
 SIGUSR1 and SIGUSR2 are custom signals that can be defined by the user. We use sigaction() to specify what action will take place when a certain signal occurs.
     
-    ```c
+    ```
     #include <signal.h>
     
     /*prototype*/
@@ -221,7 +220,7 @@ SIGUSR1 and SIGUSR2 are custom signals that can be defined by the user. We use s
     
     newact and oldact point to the sigaction struct:
     
-    ```c
+    ```
     /*struct sigaction*/
     struct sigaction {
          void     (*sa_handler)(int);
@@ -295,7 +294,7 @@ SIGUSR1 and SIGUSR2 are custom signals that can be defined by the user. We use s
     
 ## Step 6: Decode string: from signal to char
     
-    ```c
+    ```
     if (signum == SIGUSR1)
     		c += 1 << (7 - bits);
     bits++;
