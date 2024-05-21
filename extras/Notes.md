@@ -1,8 +1,4 @@
-# Minitalk Notes
-
-- Definition
-    
-    The purpose of this project is to code a small [data exchange](https://en.wikipedia.org/wiki/Data_exchange) program, the minitalk communication protocol, using [UNIX signals](https://www.math.stonybrook.edu/~ccc/dfc/dfc/signals.html).
+# Minitalk Notes: How I built it
     
 ## Step 1: get PID
  > “The server must be started first. After its launch, it has to print its PID.”
