@@ -9,7 +9,7 @@ PID is the *process ID* of the current process, a unique decimal number that can
     /*The getpid function returns the process ID of the current process.*/
     pid_t getpid (void);
     ```
-You can get the process ID of a process by calling `[getpid()](https://man7.org/linux/man-pages/man2/getpid.2.html)` .  This function returns a number of the data type “[pid_t](https://ftp.gnu.org/old-gnu/Manuals/glibc-2.2.3/html_node/libc_554.html#SEC565)”, which is a signed integer.
+You can get the process ID of a process by calling [getpid()](https://man7.org/linux/man-pages/man2/getpid.2.html).  This function returns a number of the data type “[pid_t](https://ftp.gnu.org/old-gnu/Manuals/glibc-2.2.3/html_node/libc_554.html#SEC565)”, which is a signed integer.
     
 To use getpid(), just call it in your program. It's part of the <unistd.h> library and it requires no arguments.
     
