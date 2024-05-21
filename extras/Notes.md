@@ -1,4 +1,4 @@
-# Minitalk
+# Minitalk Notes
 
 - Definition
     
