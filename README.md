@@ -2,7 +2,7 @@
 ![](./extras/demo.gif)
 
 ### Features
-* The communication between client and server is done through SIGUSR1 and SIGUSR2 **only**.
+* The communication between client and server is done through SIGUSR1 and SIGUSR2 **only**. Didn't use global variables.
 * Server acknowledges every message received by sending a signal back.
 * Unicode characters are supported.
 * You can reduce WAIT time in header file if _you gotta go fast_.
