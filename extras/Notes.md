@@ -79,7 +79,7 @@ If still unclear, review bitwise operations (down).
         
   **Bitwise EXCLUSIVE - ^**
         
-   If both bits are equal, it returns zero. If they are different, it returns one.
+   If both bits are equal, it returns zero. If they are different, it returns one.\
         | A | B | & | | | ^ | \
         | 0 | 0 | 0 | 0 | 0 | \
         | 0 | 1 | 0 | 1 | 1 | \
