@@ -6,7 +6,7 @@
 #    By: paribeir <paribeir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/11 14:34:40 by paribeir          #+#    #+#              #
-#    Updated: 2024/04/26 15:05:05 by paribeir         ###   ########.fr        #
+#    Updated: 2024/04/29 18:14:28 by paribeir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 all: server client
 
-bonus: server client
+bonus: all
 
 server: server.o libft
 	$(CC) -o $@ $< -Llibft -lft

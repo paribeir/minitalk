@@ -6,7 +6,7 @@
 /*   By: paribeir <paribeir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 16:46:49 by paribeir          #+#    #+#             */
-/*   Updated: 2024/04/26 18:58:31 by paribeir         ###   ########.fr       */
+/*   Updated: 2024/04/29 18:48:38 by paribeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include "minitalk.h"
 
-/*input error checking*/
+/*error handling*/
 int	main(int argc, char *argv[])
 {
 	int		i;
@@ -23,27 +23,29 @@ int	main(int argc, char *argv[])
 
 	i = 0;
 	if (argc != 3)
-		return (ft_printf("Error\n--> Client needs two arguments.\n"));
+		return (ft_printf(RED BOLD "Error\n--> Client needs two arguments.\n"));
 	if (!(*argv[2]))
-		return (ft_printf("Error\n--> Empty message\n"));
+		return (ft_printf(RED BOLD "Error\n--> Empty message\n"));
 	while (argv[1][i])
 	{
 		if (!(ft_isdigit(argv[1][i++])))
-			return (ft_printf("Error\n--> PID must only contain digits\n"));
+		{
+			ft_printf(RED BOLD "Error\n--> PID must only contain digits\n");
+			return (1);
+		}
 	}
 	pid = ft_atoi(argv[1]);
 	message = argv[2];
 	if (pid < 1)
-		return (ft_printf("Error\n--> PID must be an unsigned int\n"));
-	ft_printf("Client's process ID: %d\n", getpid());
-	ft_client_signals();
-	ft_dtob(pid, message);
-	ft_dtob(pid, "\n");
+		return (ft_printf(RED BOLD "Error\n--> PID must be an unsigned int\n"));
+	ft_client_config_sa();
+	ft_client_dtob(pid, message);
 	exit (EXIT_SUCCESS);
 }
 
-/*convert char into binary with bitwise operationssss*/
-void	ft_dtob(int server_id, char *c)
+/*Converts char into binary with bitwise operations
+and sends corresponding signals*/
+void	ft_client_dtob(int server_id, char *c)
 {
 	int	i;
 	int	k;
@@ -70,8 +72,8 @@ void	ft_dtob(int server_id, char *c)
 	}
 }
 
-/*Defines what  we do when we receive a signal from the Server*/
-void	ft_client_signals(void)
+/*Defines behavior when Client receives a signal from Server*/
+void	ft_client_config_sa(void)
 {
 	struct sigaction	sa_client;
 
@@ -81,20 +83,17 @@ void	ft_client_signals(void)
 	if (sigaction(SIGUSR1, &sa_client, NULL) == -1 || 
 		sigaction(SIGUSR2, &sa_client, NULL) == -1)
 	{
-		ft_printf("Sigaction error in client\n");
+		ft_printf("Sigaction error in Client\n");
 		exit(EXIT_FAILURE);
 	}
 }
 
+/*Function called when Client receives a signal.*/
 void	ft_client_handler(int signum)
 {
-	static int	chars;
-
-	if (signum == SIGUSR2)
-		ft_printf("%d characters sent\n", ++chars);
 	if (signum == SIGUSR1)
 	{
-		ft_printf("-------End of message!-------\n", ++chars);
+		ft_printf(GREEN BOLD "~~~ Message Received! ~~~\n" RESET);
 		exit(EXIT_SUCCESS);
 	}
 }

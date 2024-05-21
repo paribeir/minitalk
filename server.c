@@ -6,32 +6,54 @@
 /*   By: paribeir <paribeir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 16:46:53 by paribeir          #+#    #+#             */
-/*   Updated: 2024/04/26 19:02:06 by paribeir         ###   ########.fr       */
+/*   Updated: 2024/04/29 18:48:25 by paribeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minitalk.h"
-
 //server is the listener
-/*Function that will handle the signal.*/
 
 int	main(void)
 {
+	ft_server_message();
+	while (1)
+		ft_server_config_sa();
+	return (0);
+}
+
+/*Intro message*/
+void	ft_server_message(void)
+{
+	ft_printf(BOLD GREEN SPACES "`* __    __     __     __   __     ");
+	ft_printf("__     ______   ______     __         __  __     `*\n" RESET);
+	ft_printf(BOLD YELLOW SPACES "  /\\ \"-./  \\   /\\ \\   /\\ \"-.\\ \\");
+	ft_printf("   /\\ \\   /\\__  _\\ /\\  __ \\   /\\ \\       /\\ \\/ /    \n" RESET);
+	ft_printf(BOLD CYAN SPACES"  \\ \\ \\-./\\ \\  \\ \\ \\  \\ \\ \\-.  \\  \\ \\ \\");
+	ft_printf("  \\/_/\\ \\/ \\ \\  __ \\  \\ \\ \\____  \\ \\  _\"-.  \n" RESET);
+	ft_printf(BOLD RED SPACES"   \\ \\_\\ \\ \\_\\  \\ \\_\\  \\  \\_\\\"\\_\\  \\");
+	ft_printf(" \\_\\    \\ \\_\\  \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\ \n" RESET);
+	ft_printf(BOLD MAGENTA SPACES"    \\/_/  \\/_/   \\/_/   \\/_/ \\/_/   \\/_/");
+	ft_printf("     \\/_/   \\/_/\\/_/   \\/_____/   \\/_/\\/_/ \n" RESET);
+	ft_printf(BOLD MAGENTA SPACES"`*                                        ");
+	ft_printf("                                           `*\n" RESET);
+	ft_printf(BOLD CYAN SPACES SPACES SPACES "🔗 PID: %d", getpid());
+	ft_printf(SPACES "-~-~-        ✨ by: paribeir\n\n" RESET);
+}
+
+/*Defines behavior when Server receives a signal from Client*/
+void	ft_server_config_sa(void)
+{
 	struct sigaction	sa_server;
 
-	ft_printf("Servus at your service.\n My PID is: %d\n", getpid());
-	ft_printf("Waiting for a message...\n");
 	sigemptyset(&sa_server.sa_mask);
 	sa_server.sa_flags = SA_SIGINFO;
 	sa_server.sa_sigaction = &ft_server_handler;
 	if (sigaction(SIGUSR1, &sa_server, NULL) == -1 || 
 		sigaction(SIGUSR2, &sa_server, NULL) == -1)
-		exit (ft_printf("Sigaction error in server\n"));
-	while (1)
-		pause();
-	return (0);
+		exit(ft_printf("Sigaction error in Server\n"));
 }
 
+/*Function called when Server receives a signal.*/
 void	ft_server_handler(int signum, siginfo_t *info, void *context)
 {
 	static char	c;
@@ -45,15 +67,12 @@ void	ft_server_handler(int signum, siginfo_t *info, void *context)
 	bits++;
 	if (bits == 8)
 	{
-		if (!c)
+		if (c)
+			ft_printf("%c", c);
+		else
 		{
 			ft_printf("\n");
 			kill(client_pid, SIGUSR1);
-		}
-		else
-		{
-			ft_printf("%c", c);
-			kill(client_pid, SIGUSR2);
 		}
 		c = 0;
 		bits = 0;
