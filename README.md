@@ -14,5 +14,5 @@
 3. Run ./server in a terminal window. You'll get its PID.
 4. In another terminal window, run ./client [Server PID] [Your Message].
 
-### Project Step by Step: [Notes](./extras/Notes)
+### Project Step by Step: [Notes](./Notes)
 Feel free to check my notes for an explanation of what I learned during this project and how I built it.
