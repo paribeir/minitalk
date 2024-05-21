@@ -4,24 +4,21 @@
     
     The purpose of this project is to code a small [data exchange](https://en.wikipedia.org/wiki/Data_exchange) program, the minitalk communication protocol, using [UNIX signals](https://www.math.stonybrook.edu/~ccc/dfc/dfc/signals.html).
     
-- Step 1: get PID
+## Step 1: get PID
+ > “The server must be started first. After its launch, it has to print its PID.”
     
-    > “The server must be started first. After its launch, it has to print its PID.”
-    > 
-    
-    PID is the *process ID* of the current process, a unique decimal number that can be used, for example, to specify the process when attaching a debugger to it. You might have seen this number before. for example, when you access the system manager (Unix) or task manager (Windows), the PID of a process is under the Details/ID tab.
+PID is the *process ID* of the current process, a unique decimal number that can be used, for example, to specify the process when attaching a debugger to it. You might have seen this number before. for example, when you access the system manager (Unix) or task manager (Windows), the PID of a process is under the Details/ID tab.
     
     ```c
     #include **<unistd.h>**
     /*The getpid function returns the process ID of the current process.*/
     pid_t getpid (void);
     ```
+You can get the process ID of a process by calling `[getpid()](https://man7.org/linux/man-pages/man2/getpid.2.html)` .  This function returns a number of the data type “[pid_t](https://ftp.gnu.org/old-gnu/Manuals/glibc-2.2.3/html_node/libc_554.html#SEC565)”, which is a signed integer.
     
-    You can get the process ID of a process by calling `[getpid()](https://man7.org/linux/man-pages/man2/getpid.2.html)` .  This function returns a number of the data type “[pid_t](https://ftp.gnu.org/old-gnu/Manuals/glibc-2.2.3/html_node/libc_554.html#SEC565)”, which is a signed integer.
+To use getpid(), just call it in your program. It's part of the <unistd.h> library and it requires no arguments.
     
-    To use getpid(), just call it in your program. It's part of the <unistd.h> library and it requires no arguments.
-    
-    - chat gpt
+- chat gpt
         
         **/*System Call**: Internally, getpid() is a system call. When you invoke it, your program transitions from user mode to kernel mode to execute this system call.
         
@@ -31,83 +28,79 @@
         
         **Usage**: Common uses of getpid() include logging, process management, and creating unique identifiers for inter-process communication.*/
         
-- Step 2: client’s parameters
+## Step 2: client’s parameters
     
-    > “The client takes two parameters: The server PID and the string to send.”
-    > 
+> “The client takes two parameters: The server PID and the string to send.” 
     
-    Error checking:
+Error checking:
     
-    We have to ensure our client only runs when its given 2 parameters, i.e. argc == 3.
+We have to ensure our client only runs when its given 2 parameters, i.e. argc == 3.
     
-    Check if the PID number that we are receiving in argv[1] is an unsigned integer.
+Check if the PID number that we are receiving in argv[1] is an unsigned integer.
     
-    Check if the message in argv[2] is not empty;
+Check if the message in argv[2] is not empty;
     
-    If the input passes all error checks, we can start encoding our message.
+If the input passes all error checks, we can start encoding our message.
     
-- Step 3: convert string: bitwise operator and bitshifting
+## Step 3: convert string: bitwise operator and bitshifting
     
-    > “The client must send the string passed as a parameter to the server. (…) The communication between your client and your server has to be done only using (…) SIGUSR1 and SIGUSR2.””
-    > 
+ > “The client must send the string passed as a parameter to the server. (…) The communication between your client and your server has to be done only using (…) SIGUSR1 and SIGUSR2.””
     
-    We are going to send our message to the sever by sending zeros and ones.
+ We are going to send our message to the sever by sending zeros and ones.
     
-    To do this, we are going to loop thourgh the string and encode each character into its binary form.
+To do this, we are going to loop thourgh the string and encode each character into its binary form.
     
-    Since I already knew the “bruteforce” way of using successive division to convert bases (C Piscine C 04 - ft_putnbr_base), I decided to learn how to convert integers from decimal into binary using bitwise operations. Turns out, it’s much faster than the bruteforce method (time complexity: O(1) vs O(logn)).
+Since I already knew the “bruteforce” way of using successive division to convert bases (C Piscine C 04 - ft_putnbr_base), I decided to learn how to convert integers from decimal into binary using bitwise operations. Turns out, it’s much faster than the bruteforce method (time complexity: O(1) vs O(logn)).
     
-    I found two ways to do this.
+I found two ways to do this.
     
-    But first lets talk semantics.
+But first lets talk semantics.
     
-    The **least significant bit** (LSB) is the bit in a multiple-bit binary number with the smallest value. This is the rightmost bit.
+The **least significant bit** (LSB) is the bit in a multiple-bit binary number with the smallest value. This is the rightmost bit.
     
-    The **most significant bit** (MSB) is the bit in a multiple-bit binary number with the largest value. This is the leftmost bit.
+The **most significant bit** (MSB) is the bit in a multiple-bit binary number with the largest value. This is the leftmost bit.
+ 
+**Method 1: bitshifting and bitwise operator “and”**
     
-    **Method 1: bitshifting and bitwise operator “and”**
+We have a loop that iterates over each bit position of an 8-bit char.
     
-    We have a loop that iterates over each bit position of an 8-bit char.
+Inside the loop, right shifting moves each bit to the right by byte number of positions, effectively isolating each bit starting from the leftmost position. We start by moving the MSB (largest value) to the rightmost position (previous LSB), and we store that value in k. If k is 1, “k & 1” will be true. Else, it will be false. We continue looping, doing this for all the following bits.
+If still unclear, review bitwise operations (down).
     
-    Inside the loop, right shifting moves each bit to the right by byte number of positions, effectively isolating each bit starting from the leftmost position. We start by moving the MSB (largest value) to the rightmost position (previous LSB), and we store that value in k. If k is 1, “k & 1” will be true. Else, it will be false. We continue looping, doing this for all the following bits.
-    If still unclear, review bitwise operations.
-    
-    - Bitwise operations
+- Bitwise operations
         
-        **Bitwise AND - &**
+   **Bitwise AND - &**
         
-        If both bits are one, it returns one. Else, it returns zero.
+    If both bits are one, it returns one. Else, it returns zero.
         
-        **Bitwise OR - |**
+  **Bitwise OR - |**
         
-        If both bits are zero, it returns zero. Else, it returns one.
+   If both bits are zero, it returns zero. Else, it returns one.
         
-        **Bitwise EXCLUSIVE - ^**
+  **Bitwise EXCLUSIVE - ^**
         
-        If both bits are equal, it returns zero. If they are different, it returns one.
+   If both bits are equal, it returns zero. If they are different, it returns one.
+        | A | B | & | | | ^ | \
+        | 0 | 0 | 0 | 0 | 0 | \
+        | 0 | 1 | 0 | 1 | 1 | \
+        | 1 | 0 | 0 | 1 | 1 | \
+        | 1 | 1 | 1 | 1 | 0 | 
         
-        | A | B | & | | | ^ |
-        | --- | --- | --- | --- | --- |
-        | 0 | 0 | 0 | 0 | 0 |
-        | 0 | 1 | 0 | 1 | 1 |
-        | 1 | 0 | 0 | 1 | 1 |
-        | 1 | 1 | 1 | 1 | 0 |
+   ---
         
-        ---
+   **Bitwise NOT(~)**
         
-        **Bitwise NOT - ~**
+   Reverses the values. If a bit is one, it sets it to zero. If it’s zero, it sets it to one.
         
-        Reverses the values. If a bit is one, it sets it to zero. If it’s zero, it sets it to one.
+  **Left Shift - <<**
         
-        **Left Shift - <<**
+   Shift the bits in the operand to the left. The result is equal to the operand multiplied by powers of two (n * 2, 4, 8…).
         
-        Shift the bits in the operand to the left. The result is equal to the operand multiplied by powers of two (n * 2, 4, 8…).
+   **Right Shift - >>**
         
-        **Right Shift - >>**
+     Shift the bits in the operand to the right. The result is equal to the operand multiplied by powers of two (n / 2, 4, 8…).
         
-        Shift the bits in the operand to the right. The result is equal to the operand multiplied by powers of two (n / 2, 4, 8…).
-        
-        Source: [https://www.startertutorials.com/blog/operators-in-c.html#Bitwise_Operators](https://www.startertutorials.com/blog/operators-in-c.html#Bitwise_Operators)
+     Source: [https://www.startertutorials.com/blog/operators-in-c.html#Bitwise_Operators](https://www.startertutorials.com/blog/operators-in-c.html#Bitwise_Operators)
         
     - Okay but why does “k & 1” work?
         
@@ -120,9 +113,9 @@
         Lets visualize this.
         
         For example, lets say int k = 9. 
-        THe binary representation of 9 is “0000 0000 0000 0000 0000 0000 0000 1001”
+        The binary representation of 9 is “0000 0000 0000 0000 0000 0000 0000 1001”
         
-        ![Untitled](Minitalk%20e7734fd9a9df482a8016f61ac6595091/Untitled.png)
+        ![bitwise](./bitwise.png)
         
         0&0 is always zero. In green, we find the first 1 in k, but it does not matter, since we are comparing it to a 0, and the bitwise AND operation only returns 1 if both bits are 1. In blue, we are in the LSB position, where both are 1 and therefore the result is 1.
         
@@ -142,8 +135,7 @@
         
         k & (~k + 1)
         
-        k & (-k)
-        
+        k & (-k)   
     
     ```c
     void	ft_dtob(int server_id, char c)
@@ -194,18 +186,17 @@
     
     It is quite similar to the other example. The only thing that changes is what we bitshift.
     
-- Step 4: send SIGUSR1 and SIGUSR2 with kill().
+## Step 4: send SIGUSR1 and SIGUSR2 with kill().
     
-    SIGUSR1 and SIGUSR2 are custom signals that can be defined by the user (more to that in the next step).
+SIGUSR1 and SIGUSR2 are custom signals that can be defined by the user (more to that in the next step).
     
-    If (k&1), send SIGUSR1 to the server. Else, send SIGUSR2. Do this by using the kill() function.
+ If (k&1), send SIGUSR1 to the server. Else, send SIGUSR2. Do this by using the kill() function.
     
-- Step 5: server’s parameters - sigaction
+## Step 5: server’s parameters - sigaction
     
-    > “The communication between your client and your server has to be done only using (…) SIGUSR1 and SIGUSR2.”
-    > 
-    
-    SIGUSR1 and SIGUSR2 are custom signals that can be defined by the user. We use sigaction() to specify what action will take place when a certain signal occurs.
+> “The communication between your client and your server has to be done only using (…) SIGUSR1 and SIGUSR2.”
+
+SIGUSR1 and SIGUSR2 are custom signals that can be defined by the user. We use sigaction() to specify what action will take place when a certain signal occurs.
     
     ```c
     #include <signal.h>
@@ -215,11 +206,11 @@
     struct sigaction *oldact);
     ```
     
-    Underneath the surface, when you make a call to sigaction(), it translates into a system call.
+ Underneath the surface, when you make a call to sigaction(), it translates into a system call.
     
-    - What is a system call?
+ - What is a system call?
         
-         A system call is a request made by a program to the operating system's kernel, asking it to perform some operation on its behalf. In the case of sigaction(), the C library's implementation of sigaction() will make a system call to interact with the kernel's signal handling facilities.
+     A system call is a request made by a program to the operating system's kernel, asking it to perform some operation on its behalf. In the case of sigaction(), the C library's implementation of sigaction() will make a system call to interact with the kernel's signal handling facilities.
         
     
     The sigaction() system call is then used to change the action taken by a process on receipt of a specific signal. 
@@ -296,13 +287,13 @@
     
     ___________
     
-    **❗First issue**: struct sigaction not recognized by vs code
+    **❗Issue**: struct sigaction not recognized by vs code
     
     Despite including <signal.h> in my header, struct sigaction and SA_SIGINFO were not being recognized by vs code. I got the error message “*incomplete type is not allowed*”. 
     
     To solve this, I added the test macro [_GNU_SOURCE](https://man7.org/linux/man-pages/man7/feature_test_macros.7.html) to my header file above my libraries. This instructs the compiler to include additional features and definitions provided by the GNU C Library. Without it, the compiler was using a strict interpretation of the C standard, which did not include the struct sigaction that I needed.
     
-- Step 6: Decode string: from signal to char
+## Step 6: Decode string: from signal to char
     
     ```c
     if (signum == SIGUSR1)
@@ -310,16 +301,16 @@
     bits++;
     ```
     
-    Now we are converting from the signals back into a char.
+Now we are converting from the signals back into a char.
     We keep track of how many signals we have received (bits) until we reach 8, enough bits to print a char.
     
-    To do this, we start by checking if we received a SIGUSR1 signal, which indicates a ‘1’ bit. If we get it, we add it to its correct position in c. We are able to do this using bitshifting.
+To do this, we start by checking if we received a SIGUSR1 signal, which indicates a ‘1’ bit. If we get it, we add it to its correct position in c. We are able to do this using bitshifting.
     
-    1 in binary is ‘00000001’
+ 1 in binary is ‘00000001’
     
-    if we want to add ‘1’ to a certain position in c, we just have to bitshift 1 to the lext until its in the position we want it to be in c. Then, we just add it to c 
+if we want to add ‘1’ to a certain position in c, we just have to bitshift 1 to the lext until its in the position we want it to be in c. Then, we just add it to c 
     
-    Once we reach 8 bits, we check if c is not a null terminator. If not, we print it. Else, we print a new line and send a signal back to the client to indicate that the message was received and has finished printing.
+Once we reach 8 bits, we check if c is not a null terminator. If not, we print it. Else, we print a new line and send a signal back to the client to indicate that the message was received and has finished printing.
     
 - Encryption and Decryption
     
