@@ -18,5 +18,5 @@
 Feel free to check my notes for an explanation of how I made this project and what I learned along the way.
 
 ### ❗Issues
-I had to use `_GNU_SOURCE` in this project to tap into some GNU-specific features (I expain this at the end of my [notes](./extras/Notes.md). \
+I had to use `_GNU_SOURCE` in this project to tap into some GNU-specific features (I expain this at the end of my [notes](./extras/Notes.md=9)). \
 If you’re compiling this on a non-GNU system like BSD or macOS, you might hit a few bumps.
