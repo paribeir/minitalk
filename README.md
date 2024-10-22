@@ -15,7 +15,7 @@
 4. In another terminal window, run ./client [Server PID] [Your Message].
 
 ### 📝 Project Step by Step: [Notes](./extras/Notes.md)
-Feel free to check my notes for an explanation of how I made this project and what I learned along the way.
+Feel free to check my notes for an explanation on how I made this project and what I learned along the way.
 
 ### ❗Issues
 I had to use `_GNU_SOURCE` in this project to tap into some GNU-specific features (I expain this at the end of my [notes](./extras/Notes.md=9)). \
